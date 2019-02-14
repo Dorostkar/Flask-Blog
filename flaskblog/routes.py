@@ -12,7 +12,10 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/")
 @app.route("/home")
 def home():
-    posts = Post.query.all()
+    # getting page number from url ?page=2
+    page = request.args.get('page', 1, type=int)
+    # set default to 5 record per page
+    posts = Post.query.paginate(page=page, per_page=5)
     return render_template("home.html",posts=posts)
 
 @app.route("/about")
